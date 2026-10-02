@@ -1,0 +1,297 @@
+/* ==========================================================================
+   01 · Base: variables de color, reinicio, cabecera, botones y formularios
+   ========================================================================== */
+
+/* ---------- Colores (tema Automático, modo claro) ----------
+   --asig-fondo / --asig-texto / --asig-acento: saturación y luminosidad que se
+   combinan con el --tono de cada asignatura: hsl(var(--tono) var(--asig-fondo)) */
+:root {
+  --fondo: #eceaff;
+  --fondo-2: #ffe9f3;
+  --fondo-3: #c9f0ff55;
+  --superficie: #ffffffcc;
+  --texto: #23204a;
+  --texto-suave: #56537f;
+  --borde: #ffffff;
+  --asig-fondo: 90% 87%;
+  --asig-texto: 55% 17%;
+  --asig-acento: 75% 45%;
+  --acento: #4a3ae0;
+  --sobre-acento: #ffffff;
+
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Tema Automático en modo oscuro (mismos valores que el tema "Oscuro") */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --fondo: #15132e;
+    --fondo-2: #2a1330;
+    --fondo-3: #1b3a7a55;
+    --superficie: #ffffff14;
+    --texto: #f4f2ff;
+    --texto-suave: #b7b4dc;
+    --borde: #ffffff1f;
+    --asig-fondo: 38% 26%;
+    --asig-texto: 90% 93%;
+    --asig-acento: 85% 68%;
+    --acento: #a79dff;
+    --sobre-acento: #15132e;
+    color-scheme: dark;
+  }
+}
+
+/* ---------- Reinicio y página ---------- */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: var(--tamano-letra, 100%);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 24px 16px 48px;
+  font-family: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--texto);
+  background-color: var(--fondo);
+  background-image:
+    radial-gradient(60rem 40rem at 90% -10%, var(--fondo-2), transparent 60%),
+    radial-gradient(50rem 40rem at -10% 110%, var(--fondo-3), transparent 60%);
+  background-attachment: fixed;
+}
+
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+:focus-visible {
+  outline: 4px solid var(--acento);
+  outline-offset: 3px;
+}
+
+/* Texto solo para lectores de pantalla */
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Cabecera ---------- */
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.4rem, 8vw, 4.4rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.sub {
+  margin: 8px 0 0;
+  font-size: 1.05rem;
+  color: var(--texto-suave);
+}
+
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Firma del autor */
+.credit {
+  display: inline-block;
+  max-width: 100%;
+  margin: 12px 0 0;
+  padding: 7px 16px;
+  text-align: left;
+  font-size: 0.9rem;
+  color: var(--texto-suave);
+  background: var(--superficie);
+  border: 2px solid var(--borde);
+  border-radius: 14px;
+}
+
+.credit b {
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+  color: var(--texto);
+}
+
+/* ---------- Botones ---------- */
+button {
+  font: inherit;
+  color: var(--texto);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 16px;
+  font-weight: 700;
+  background: var(--superficie);
+  border: 2px solid var(--borde);
+  border-radius: 999px;
+}
+
+.pill:hover {
+  border-color: var(--acento);
+}
+
+.pill.pri {
+  color: var(--sobre-acento);
+  background: var(--acento);
+  border-color: var(--acento);
+}
+
+.pill[aria-pressed="true"] {
+  border-color: var(--acento);
+  box-shadow: inset 0 0 0 1px var(--acento);
+}
+
+/* Ocupa todo el ancho de su contenedor */
+.all {
+  justify-content: center;
+  width: 100%;
+}
+
+/* ---------- Enlaces a Moodle y Classroom ---------- */
+.links {
+  position: relative;
+  z-index: 6;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 14px;
+}
+
+.dd {
+  position: relative;
+}
+
+.links .lb {
+  min-height: 48px;
+  padding: 0 20px;
+  font-weight: 800;
+  color: #10121a;
+  background: hsl(var(--tono) 90% 58%);
+  border: 2px solid hsl(var(--tono) 100% 72%);
+  box-shadow: 0 0 22px -6px hsl(var(--tono) 100% 55%);
+}
+
+.links .lb[aria-expanded="true"] {
+  box-shadow:
+    0 0 0 3px hsl(var(--tono) 100% 72% / 0.6),
+    0 0 26px -2px hsl(var(--tono) 100% 55%);
+}
+
+/* Panel desplegable */
+.ddp {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  z-index: 10;
+  width: min(320px, calc(100vw - 32px));
+  padding: 18px;
+  color: var(--texto);
+  background: var(--fondo);
+  border: 2px solid hsl(var(--tono) 90% 60%);
+  border-radius: 20px;
+  box-shadow:
+    0 24px 60px -15px #000a,
+    0 0 34px -8px hsl(var(--tono) 100% 60% / 0.7);
+}
+
+.dd.r .ddp {
+  left: auto;
+  right: 0;
+}
+
+.ddp h3 {
+  margin: 0 0 4px;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+.ddp p {
+  margin: 0 0 14px;
+  font-size: 0.95rem;
+  color: var(--texto-suave);
+}
+
+/* Botón de enlace (también se usa en el botón "Cerrar" de la ficha) */
+.go {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  font-weight: 800;
+  color: #10121a;
+  text-decoration: none;
+  background: hsl(var(--tono) 90% 58%);
+  border: 2px solid hsl(var(--tono) 100% 75%);
+  border-radius: 14px;
+}
+
+.go:hover {
+  filter: brightness(1.08);
+}
+
+/* ---------- Formularios ---------- */
+label {
+  display: block;
+  margin: 10px 0 4px;
+  font-size: 0.9rem;
+  color: var(--texto-suave);
+}
+
+select,
+input {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 12px;
+  font: inherit;
+  color: var(--texto);
+  background: var(--superficie);
+  border: 2px solid var(--borde);
+  border-radius: 14px;
+}
+
+select {
+  font-weight: 700;
+  background-color: var(--fondo);
+  border-color: var(--acento);
+}
+
+option {
+  padding: 10px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #1d1a3f;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}

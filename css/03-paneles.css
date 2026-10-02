@@ -1,0 +1,205 @@
+/* ==========================================================================
+   03 · Paneles laterales (Profesores, Exámenes, Calendario) y lista de profesores
+   ========================================================================== */
+
+/* Fondo oscuro que aparece detrás de un panel abierto */
+#scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: #0007;
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s, visibility 0.25s;
+}
+
+#scrim.on {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ---------- Panel deslizante ---------- */
+#drawer,
+#exdrawer,
+#cdrawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 21;
+  width: min(90vw, 390px);
+  padding: calc(18px + env(safe-area-inset-top, 0px)) 16px calc(24px + env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+  color: var(--texto);
+  background: var(--fondo);
+  box-shadow: 20px 0 60px -20px #0009;
+  transform: translateX(-105%);
+  visibility: hidden;
+  transition: transform 0.3s, visibility 0.3s;
+}
+
+/* Exámenes y Calendario entran por la derecha */
+#exdrawer,
+#cdrawer {
+  left: auto;
+  right: 0;
+  box-shadow: -20px 0 60px -20px #0009;
+  transform: translateX(105%);
+}
+
+#drawer.open,
+#exdrawer.open,
+#cdrawer.open {
+  transform: none;
+  visibility: visible;
+}
+
+.dh {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.dh h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  letter-spacing: -0.03em;
+}
+
+.dp {
+  margin: 0 0 16px;
+  font-size: 0.95rem;
+  color: var(--texto-suave);
+}
+
+/* Botón redondo (cerrar, mes anterior/siguiente) */
+.x {
+  width: 46px;
+  height: 46px;
+  font-size: 1.3rem;
+  background: var(--superficie);
+  border: 2px solid var(--borde);
+  border-radius: 50%;
+}
+
+/* ---------- Tarjeta de un profesor ---------- */
+.tch {
+  margin-bottom: 12px;
+  overflow: hidden;
+  background: var(--superficie);
+  border: 2px solid var(--borde);
+  border-radius: 22px;
+}
+
+.tch.on {
+  border-color: var(--acento);
+}
+
+.tb {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 64px;
+  padding: 12px;
+  text-align: left;
+}
+
+/* Círculo con las iniciales */
+.av {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 1px 2px #0005;
+  background: hsl(var(--tono) 80% 60%);
+  border-radius: 50%;
+}
+
+.tb .n {
+  flex: 1;
+  line-height: 1.2;
+}
+
+.tb .n b {
+  display: block;
+  font-size: 1.02rem;
+}
+
+.tb .n small {
+  color: var(--texto-suave);
+}
+
+/* Barritas con las horas de cada día */
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 34px;
+}
+
+.bars i {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+  font-size: 0.62rem;
+  font-style: normal;
+  color: var(--texto-suave);
+}
+
+.bars i u {
+  display: block;
+  width: 10px;
+  min-height: 2px;
+  text-decoration: none;
+  background: var(--acento);
+  border-radius: 3px;
+  opacity: 0.85;
+}
+
+.chev {
+  color: var(--texto-suave);
+  transition: transform 0.2s;
+}
+
+.tch.on .chev {
+  transform: rotate(180deg);
+}
+
+/* ---------- Asignaturas de un profesor ---------- */
+.subs {
+  display: grid;
+  gap: 6px;
+  padding: 0 10px 12px;
+}
+
+.sb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 0 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: left;
+  color: hsl(var(--tono) var(--asig-texto));
+  background: hsl(var(--tono) var(--asig-fondo));
+  border: 3px solid transparent;
+  border-radius: 14px;
+}
+
+.sb span {
+  flex: 1;
+  font-family: var(--fuente, inherit);
+}
+
+.sb[aria-pressed="true"] {
+  border-color: hsl(var(--tono) var(--asig-texto));
+}

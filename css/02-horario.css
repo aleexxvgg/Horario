@@ -1,0 +1,268 @@
+/* ==========================================================================
+   02 · Horario: barra de estado, tarjeta "Ahora", pestañas y tabla semanal
+   ========================================================================== */
+
+/* ---------- Barra de estado ---------- */
+.status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 52px;
+  margin: 0 0 14px;
+  padding: 10px 16px;
+  color: var(--texto-suave);
+  background: var(--superficie);
+  border: 2px solid var(--borde);
+  border-radius: 18px;
+}
+
+.status b {
+  color: var(--texto);
+}
+
+/* ---------- Tarjeta "Ahora en clase / Siguiente clase" ---------- */
+.next {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 14px;
+  padding: 16px 20px;
+  color: hsl(var(--tono) var(--asig-texto));
+  background: hsl(var(--tono) var(--asig-fondo));
+  border-radius: 24px;
+}
+
+.next .ic {
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+.next small {
+  display: block;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.next strong {
+  font-family: var(--fuente, inherit);
+  font-size: calc(1.35rem * var(--escala, 1));
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* Barra de progreso de la clase en curso */
+.pg {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: var(--progreso);
+  height: 5px;
+  background: hsl(var(--tono) 100% 62%);
+  box-shadow: 0 0 12px hsl(var(--tono) 100% 62%);
+}
+
+/* ---------- Pestañas de los días (solo móvil) ---------- */
+.tabs {
+  display: none;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.tab {
+  flex: 1;
+  min-height: 48px;
+  font-weight: 700;
+  background: var(--superficie);
+  border: 2px solid var(--borde);
+  border-radius: 16px;
+}
+
+.tab[aria-selected="true"] {
+  color: var(--sobre-acento);
+  background: var(--acento);
+  border-color: var(--acento);
+}
+
+.tab.today::after {
+  content: "·";
+  display: block;
+  font-size: 1.6rem;
+  line-height: 0.3;
+}
+
+.tab.has::before {
+  content: "✓ ";
+  font-size: 0.8em;
+}
+
+/* ---------- Tabla semanal ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: 76px repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  padding: 12px;
+  background: var(--superficie);
+  border: 2px solid var(--borde);
+  border-radius: 28px;
+}
+
+/* Cabecera con el nombre del día */
+.h {
+  padding: 10px 0;
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--texto-suave);
+  border-radius: 14px;
+}
+
+.h.today {
+  color: var(--sobre-acento);
+  background: var(--acento);
+}
+
+/* Columna de las horas */
+.t {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  padding-right: 6px;
+  font-size: 0.82rem;
+  line-height: 1.25;
+  color: var(--texto-suave);
+  font-variant-numeric: tabular-nums;
+}
+
+.t b {
+  font-size: 0.98rem;
+  color: var(--texto);
+}
+
+/* Recreo */
+.r {
+  grid-column: 1 / -1;
+  grid-row: 4;
+  padding: 8px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--texto-suave);
+  background: repeating-linear-gradient(135deg, transparent 0 10px, var(--borde) 10px 20px);
+  border-radius: 14px;
+}
+
+/* ---------- Clase (una casilla de la tabla) ---------- */
+.c {
+  position: relative;
+  grid-row: var(--fila);
+  grid-column: var(--columna);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+  min-height: 88px;
+  padding: 11px 12px;
+  text-align: left;
+  color: hsl(var(--tono) var(--asig-texto));
+  background: hsl(var(--tono) var(--asig-fondo));
+  border: 3px solid transparent;
+  border-radius: 18px;
+  transition: transform 0.15s, opacity 0.25s;
+}
+
+.c:hover {
+  transform: translateY(-2px);
+}
+
+.c .ic {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.c strong {
+  font-family: var(--fuente, inherit);
+  font-size: calc(1rem * var(--escala, 1));
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+
+.c span {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+/* La hora solo se muestra en el móvil */
+.c .tm {
+  display: none;
+}
+
+/* Clase que está sonando ahora mismo */
+.c.now {
+  box-shadow:
+    0 0 0 3px hsl(var(--tono) var(--asig-acento)),
+    0 10px 24px -8px hsl(var(--tono) var(--asig-acento));
+}
+
+.c.now::after {
+  content: "Ahora";
+  position: absolute;
+  top: 9px;
+  right: 10px;
+  padding: 2px 8px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--fondo);
+  background: hsl(var(--tono) var(--asig-acento));
+  border-radius: 999px;
+}
+
+/* Clase marcada por el filtro */
+.c.hit {
+  border-color: hsl(var(--tono) var(--asig-texto));
+  box-shadow: 0 8px 22px -8px hsl(var(--tono) var(--asig-acento));
+}
+
+.c.hit::before {
+  content: "✓";
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.c.now.hit::before {
+  display: none;
+}
+
+/* Clase que no cumple el filtro */
+.c.dim {
+  opacity: 0.22;
+  filter: grayscale(0.85);
+  border: 3px dashed var(--borde);
+}
+
+/* Aviso de examen dentro de la clase */
+.exb {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 2px 9px;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 800;
+  color: #fff;
+  background: #e11d48;
+  border-radius: 999px;
+}
+
+.hint {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--texto-suave);
+}

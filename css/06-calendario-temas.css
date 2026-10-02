@@ -1,0 +1,220 @@
+/* ==========================================================================
+   06 · Calendario, selector de temas y colores de cada tema
+   ========================================================================== */
+
+/* ---------- Calendario ---------- */
+.calh {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+/* Nombre del mes (al pulsarlo se vuelve a hoy) */
+.cmt {
+  flex: 1;
+  min-height: 46px;
+  font-size: 1.3rem;
+  font-weight: 800;
+  text-transform: capitalize;
+  letter-spacing: -0.02em;
+  border-radius: 14px;
+}
+
+.cgrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  padding: 12px;
+  background: var(--superficie);
+  border: 2px solid var(--borde);
+  border-radius: 24px;
+}
+
+/* Letras L M X J V S D */
+.cw {
+  padding-bottom: 2px;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--texto-suave);
+}
+
+/* Cada día */
+.cdb {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 46px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  background: var(--superficie);
+  border: 2px solid var(--borde);
+  border-radius: 14px;
+}
+
+.cdb.we {
+  opacity: 0.55;
+}
+
+.cdb.today {
+  color: var(--sobre-acento);
+  background: var(--acento);
+  border-color: var(--acento);
+  opacity: 1;
+}
+
+.cdb.sel {
+  outline: 3px solid var(--acento);
+  outline-offset: 1px;
+}
+
+/* Puntos de color de los exámenes del día */
+.dots {
+  display: flex;
+  gap: 3px;
+  height: 7px;
+}
+
+.dots i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1.5px #0003;
+}
+
+/* Detalle del día seleccionado */
+.cdt h3 {
+  margin: 18px 0 10px;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+
+.cdt h3::first-letter {
+  text-transform: uppercase;
+}
+
+.ci {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  color: hsl(var(--tono) var(--asig-texto));
+  background: hsl(var(--tono) var(--asig-fondo));
+  border-radius: 18px;
+}
+
+.ci > span {
+  font-size: 1.5rem;
+}
+
+.ci strong {
+  font-family: var(--fuente, inherit);
+}
+
+.ci small {
+  display: block;
+  opacity: 0.9;
+}
+
+.ci.exx {
+  box-shadow: inset 0 0 0 3px #e11d48;
+}
+
+/* ---------- Selector de temas ---------- */
+#thm {
+  width: min(94vw, 440px);
+}
+
+#thm h2 {
+  margin: 0;
+}
+
+.tg {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 16px 0;
+}
+
+/* Muestra de un tema (el fondo y el texto se ponen desde JS) */
+.tt {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 78px;
+  padding: 10px 12px;
+  font-weight: 800;
+  text-align: left;
+  border: 3px solid transparent;
+  border-radius: 18px;
+}
+
+.tt i {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px #ffffffaa, 0 0 0 4px #0003;
+}
+
+.tt[aria-pressed="true"] {
+  border-color: var(--acento);
+  box-shadow: 0 0 0 3px var(--acento);
+}
+
+.tt[aria-pressed="true"] span::before {
+  content: "✓ ";
+}
+
+/* ---------- Colores de cada tema ----------
+   "Automático" usa las variables de 01-base.css y "Claro" no cambia nada.
+   Los demás temas se activan con data-theme en <html>. */
+
+/* Tema Oscuro */
+:root[data-theme="dark"] {
+  --fondo: #15132e;
+  --fondo-2: #2a1330;
+  --fondo-3: #1b3a7a55;
+  --superficie: #ffffff14;
+  --texto: #f4f2ff;
+  --texto-suave: #b7b4dc;
+  --borde: #ffffff1f;
+  --asig-fondo: 38% 26%;
+  --asig-texto: 90% 93%;
+  --asig-acento: 85% 68%;
+  --acento: #a79dff;
+  --sobre-acento: #15132e;
+}
+
+/* Temas oscuros de color: comparten superficies y colores de asignatura */
+:root[data-theme="cyber"],
+:root[data-theme="oceano"],
+:root[data-theme="bosque"],
+:root[data-theme="neon"],
+:root[data-theme="cafe"] {
+  --asig-fondo: 38% 26%;
+  --asig-texto: 90% 93%;
+  --asig-acento: 85% 68%;
+  --superficie: #ffffff12;
+  --borde: #ffffff22;
+  --sobre-acento: #06121f;
+  color-scheme: dark;
+}
+
+:root[data-theme="cyber"]  { --fondo: #050912; --fondo-2: #0a2a4a; --fondo-3: #00ffd533; --texto: #e8fbff; --texto-suave: #8fd3e6; --acento: #00e5ff; --sobre-acento: #001318; }
+:root[data-theme="oceano"] { --fondo: #071a2e; --fondo-2: #0b4a75; --fondo-3: #0e7c9a55; --texto: #e6f4ff; --texto-suave: #9fc3e0; --acento: #4cc9f0; }
+:root[data-theme="bosque"] { --fondo: #0c1f17; --fondo-2: #175a3a; --fondo-3: #8bd45a33; --texto: #e6f7ec; --texto-suave: #a3cdb4; --acento: #5fdc8f; }
+:root[data-theme="neon"]   { --fondo: #0b0616; --fondo-2: #4a0b6b; --fondo-3: #00e5ff33; --texto: #fdf4ff; --texto-suave: #d4a8ee; --acento: #ff3df2; --sobre-acento: #12001a; }
+:root[data-theme="cafe"]   { --fondo: #1e1410; --fondo-2: #5a3320; --fondo-3: #f0a35e33; --texto: #f7ebe0; --texto-suave: #cfae94; --acento: #f0a35e; --sobre-acento: #1e1410; }
+
+/* Temas claros de color: solo cambian los colores de marca */
+:root[data-theme="sakura"]    { --fondo: #fff0f6; --fondo-2: #ffc9e3; --fondo-3: #ffe0b855; --texto: #4a1230; --texto-suave: #8a3f66; --acento: #c2185b; }
+:root[data-theme="menta"]     { --fondo: #e8fbf3; --fondo-2: #b9f0dc; --fondo-3: #c9e8ff88; --texto: #0f3b30; --texto-suave: #2f6a58; --acento: #0b8a68; }
+:root[data-theme="atardecer"] { --fondo: #fff1e2; --fondo-2: #ffc7a8; --fondo-3: #ffe08a66; --texto: #4a2210; --texto-suave: #85502f; --acento: #d9481f; }
+:root[data-theme="lavanda"]   { --fondo: #f1ecff; --fondo-2: #d8c8ff; --fondo-3: #ffd6f088; --texto: #2e1f5c; --texto-suave: #5e4e94; --acento: #6c3ef0; }
+:root[data-theme="cielo"]     { --fondo: #e6f4ff; --fondo-2: #b8dcff; --fondo-3: #d5fff588; --texto: #0f2d52; --texto-suave: #3f6089; --acento: #0f63e0; }

@@ -1,0 +1,73 @@
+/* ==========================================================================
+   08 · Alto contraste, móvil y movimiento reducido
+   ========================================================================== */
+
+/* ---------- Alto contraste (botón "Contraste") ---------- */
+html[data-hc="1"] {
+  --borde: var(--texto);
+  --texto-suave: var(--texto);
+}
+
+html[data-hc="1"] body {
+  background-image: none;
+}
+
+html[data-hc="1"] .c,
+html[data-hc="1"] .sb {
+  font-weight: 700;
+  border-color: hsl(var(--tono) var(--asig-texto));
+}
+
+html[data-hc="1"] .c.dim {
+  border-style: dashed;
+}
+
+/* ---------- Móvil: se ve un solo día, elegido con las pestañas ---------- */
+@media (max-width: 759px) {
+  .tabs {
+    display: flex;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    padding: 10px;
+    border-radius: 24px;
+  }
+
+  .h,
+  .t {
+    display: none;
+  }
+
+  .c {
+    grid-column: 1;
+    grid-row: span var(--horas);
+    min-height: calc(80px * var(--horas) + 8px * (var(--horas) - 1));
+  }
+
+  .c .tm {
+    display: block;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .r {
+    grid-row: auto;
+  }
+
+  /* Solo se muestran las clases del día seleccionado */
+  .grid[data-sel="0"] .c:not([data-d="0"]),
+  .grid[data-sel="1"] .c:not([data-d="1"]),
+  .grid[data-sel="2"] .c:not([data-d="2"]),
+  .grid[data-sel="3"] .c:not([data-d="3"]),
+  .grid[data-sel="4"] .c:not([data-d="4"]) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

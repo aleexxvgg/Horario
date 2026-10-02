@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Alejandro Vargas García">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mi horario · 2º SMR</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Oswald:wght@500;700&family=Caveat:wght@600;700&family=Pacifico&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@500;700&family=Fredoka:wght@500;600&family=Playfair+Display:wght@600;800&family=Orbitron:wght@600;800&family=Special+Elite&display=swap">
+
+  <link rel="stylesheet" href="css/01-base.css">
+  <link rel="stylesheet" href="css/02-horario.css">
+  <link rel="stylesheet" href="css/03-paneles.css">
+  <link rel="stylesheet" href="css/04-dialogos.css">
+  <link rel="stylesheet" href="css/05-examenes.css">
+  <link rel="stylesheet" href="css/06-calendario-temas.css">
+  <link rel="stylesheet" href="css/07-futurista.css">
+  <link rel="stylesheet" href="css/08-adaptable.css">
+</head>
+
+<body>
+  <main>
+    <header>
+      <div>
+        <div class="hud" id="hud" aria-hidden="true"></div>
+        <h1 id="title" contenteditable="true" spellcheck="false" aria-label="Título del horario">Mi horario</h1>
+        <p class="sub" id="course" contenteditable="true" spellcheck="false" aria-label="Curso y centro">2º SMR · IES Donoso Cortés · 2026/27</p>
+        <p class="credit"><span>Trabajo realizado por</span> <b>Alejandro Vargas García</b></p>
+      </div>
+
+      <div class="tools">
+        <button class="pill pri" id="open" type="button" aria-controls="drawer" aria-expanded="false">👩‍🏫 Profesores</button>
+        <button class="pill pri" id="calopen" type="button" aria-controls="cdrawer" aria-expanded="false">🗓️ Calendario</button>
+        <button class="pill pri" id="exopen" type="button" aria-controls="exdrawer" aria-expanded="false">📝 Exámenes</button>
+        <button class="pill" id="fsm" type="button" aria-label="Reducir tamaño del texto">A−</button>
+        <button class="pill" id="fsp" type="button" aria-label="Aumentar tamaño del texto">A+</button>
+        <button class="pill" id="hc" type="button" aria-pressed="false">Contraste</button>
+        <button class="pill" id="fx" type="button" aria-pressed="true">✨ Futurista</button>
+        <button class="pill" id="themeopen" type="button">🎨 Temas</button>
+      </div>
+    </header>
+
+    <nav class="links" aria-label="Plataformas del instituto">
+      <div class="dd" style="--tono:30">
+        <button type="button" class="pill lb" id="ddm" aria-expanded="false" aria-controls="ddmp">🎓 Moodle ▾</button>
+        <div class="ddp" id="ddmp" hidden>
+          <h3>Moodle</h3>
+          <p>Aula virtual del IES Donoso Cortés (EducarEx).</p>
+          <a class="go" href="https://moodle.educarex.es/iesdonosocortes/login/index.php" target="_blank" rel="noopener noreferrer">Ir a Moodle ↗<span class="sr"> (se abre en una pestaña nueva)</span></a>
+        </div>
+      </div>
+
+      <div class="dd r" style="--tono:145">
+        <button type="button" class="pill lb" id="ddc" aria-expanded="false" aria-controls="ddcp">🏫 Classroom ▾</button>
+        <div class="ddp" id="ddcp" hidden>
+          <h3>Google Classroom</h3>
+          <p>Tareas, materiales y avisos de tus clases.</p>
+          <a class="go" href="https://classroom.google.com/" target="_blank" rel="noopener noreferrer">Ir a Classroom ↗<span class="sr"> (se abre en una pestaña nueva)</span></a>
+        </div>
+      </div>
+    </nav>
+
+    <p class="status" id="status" role="status" aria-live="polite"></p>
+    <div class="next" id="next" style="--tono:220"></div>
+    <div class="tabs" id="tabs" role="tablist" aria-label="Días de la semana"></div>
+    <div class="grid" id="grid" role="group" aria-label="Horario semanal"></div>
+    <p class="hint">Toca una clase para ver sus horas y editarla. Los cambios se guardan en este dispositivo.</p>
+  </main>
+
+  <div id="scrim"></div>
+
+  <!-- Panel: profesores -->
+  <aside id="drawer" aria-label="Profesores y asignaturas" inert>
+    <div class="dh">
+      <h2>Profesores</h2>
+      <button class="x" id="close" type="button" aria-label="Cerrar panel">✕</button>
+    </div>
+    <p class="dp">Elige un profesor para marcar solo sus horas. Dentro, elige una asignatura para afinar más.</p>
+    <div id="list"></div>
+    <button class="pill all" id="all" type="button">Ver todo el horario</button>
+  </aside>
+
+  <!-- Panel: exámenes -->
+  <aside id="exdrawer" aria-label="Exámenes" inert>
+    <div class="dh">
+      <h2>Exámenes</h2>
+      <button class="x" id="exclose" type="button" aria-label="Cerrar panel">✕</button>
+    </div>
+    <p class="dp">Añade un examen y aparecerá marcado en tu horario esa semana.</p>
+    <div class="exf">
+      <label for="exk">Asignatura</label>
+      <select id="exk"></select>
+      <label for="exd">Día del examen</label>
+      <input type="date" id="exd">
+      <label for="exn">Nota (opcional)</label>
+      <input id="exn" placeholder="Ej. Temas 3 y 4">
+      <button type="button" class="pill pri all" id="exadd">＋ Añadir examen</button>
+      <p class="exm" id="exmsg" role="status" aria-live="polite"></p>
+    </div>
+    <ul class="exl2" id="exlist"></ul>
+  </aside>
+
+  <!-- Panel: calendario -->
+  <aside id="cdrawer" aria-label="Calendario" inert>
+    <div class="dh">
+      <h2>Calendario</h2>
+      <button class="x" id="calclose" type="button" aria-label="Cerrar panel">✕</button>
+    </div>
+    <div class="calh">
+      <button class="x" id="cprev" type="button" aria-label="Mes anterior">‹</button>
+      <button class="cmt" id="cmt" type="button" aria-label="Volver a hoy"></button>
+      <button class="x" id="cnext" type="button" aria-label="Mes siguiente">›</button>
+    </div>
+    <div class="cgrid" id="cgrid"></div>
+    <div class="cdt" id="cdet" aria-live="polite"></div>
+  </aside>
+
+  <!-- Diálogo: temas -->
+  <dialog id="thm" aria-labelledby="tt">
+    <h2 id="tt">Elige tu tema</h2>
+    <div class="tg" id="tg" role="group" aria-label="Temas de color"></div>
+    <button class="pill pri all" id="tclose" type="button">Listo</button>
+  </dialog>
+
+  <!-- Diálogo: ficha de una asignatura -->
+  <dialog id="info" aria-labelledby="it" style="--tono:220">
+    <div class="ib">
+      <div class="ih">
+        <div class="ie" id="ie" aria-hidden="true"></div>
+        <div>
+          <h2 id="it"></h2>
+          <p id="isub"></p>
+        </div>
+      </div>
+      <p class="chip" id="itot"></p>
+      <div class="mc" id="mc" aria-hidden="true"></div>
+      <ul class="il" id="il"></ul>
+      <div class="ibt">
+        <button type="button" id="ifilter">Marcar en el horario</button>
+        <button type="button" id="iedit">Editar</button>
+        <button type="button" class="go" id="iclose">Cerrar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Diálogo: editar una clase -->
+  <dialog id="dlg" aria-labelledby="dt">
+    <h2 id="dt">Editar clase</h2>
+    <label for="sel">Asignatura</label>
+    <select id="sel"></select>
+    <label for="teach">Profesor/a</label>
+    <input id="teach">
+    <label for="room">Aula</label>
+    <input id="room">
+    <div class="row">
+      <button type="button" id="cancel">Cancelar</button>
+      <button type="button" class="ok" id="save">Guardar</button>
+    </div>
+  </dialog>
+
+  <script src="js/data.js"></script>
+  <script src="js/estado.js"></script>
+  <script src="js/dibujar.js"></script>
+  <script src="js/eventos.js"></script>
+</body>
+</html>
